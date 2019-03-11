@@ -3077,9 +3077,13 @@ ngx_http_proxy_merge_loc_conf(ngx_conf_t *cf, void *parent, void *child)
     }
 
 
-    ngx_conf_merge_bitmask_value(conf->upstream.ignore_headers,
-                              prev->upstream.ignore_headers,
-                              NGX_CONF_BITMASK_SET);
+//    ngx_conf_merge_bitmask_value(conf->upstream.ignore_headers,
+//                              prev->upstream.ignore_headers,
+//                              NGX_CONF_BITMASK_SET);
+
+    if ( conf->upstream.ar_ignore_headers == NULL ){
+    	conf->upstream.ar_ignore_headers = prev->upstream.ar_ignore_headers ;
+    }
 
 
 //    ngx_conf_merge_bitmask_value(conf->upstream.next_upstream,
@@ -3136,10 +3140,10 @@ ngx_http_proxy_merge_loc_conf(ngx_conf_t *cf, void *parent, void *child)
                               prev->upstream.cache_max_range_offset,
                               NGX_MAX_OFF_T_VALUE);
 
-    ngx_conf_merge_bitmask_value(conf->upstream.cache_use_stale,
-                              prev->upstream.cache_use_stale,
-                              (NGX_CONF_BITMASK_SET
-                               |NGX_HTTP_UPSTREAM_FT_OFF));
+//    ngx_conf_merge_bitmask_value(conf->upstream.cache_use_stale,
+//                              prev->upstream.cache_use_stale,
+//                              (NGX_CONF_BITMASK_SET
+//                               |NGX_HTTP_UPSTREAM_FT_OFF));
 
 // we dont need this section
 //    if (conf->upstream.cache_use_stale & NGX_HTTP_UPSTREAM_FT_OFF) {
@@ -3150,6 +3154,10 @@ ngx_http_proxy_merge_loc_conf(ngx_conf_t *cf, void *parent, void *child)
 //    if (conf->upstream.cache_use_stale & NGX_HTTP_UPSTREAM_FT_ERROR) {
 //        conf->upstream.cache_use_stale |= NGX_HTTP_UPSTREAM_FT_NOLIVE;
 //    }
+
+    if ( conf->upstream.ar_cache_use_stale == NULL ){
+    	conf->upstream.ar_cache_use_stale = prev->upstream.ar_cache_use_stale ;
+    }
 
     if (conf->upstream.cache_methods == 0) {
         conf->upstream.cache_methods = prev->upstream.cache_methods;
