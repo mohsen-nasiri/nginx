@@ -567,6 +567,7 @@ ngx_http_upstream_init_request(ngx_http_request_t *r)
 
     u = r->upstream;
 
+    u->conf->ignore_headers = 0;
     if ((u->conf->ar_ignore_headers != NULL
             && ngx_http_complex_value(r, u->conf->ar_ignore_headers, &ar_ignore_headers_val) == NGX_OK)) {
           char* ar_char_ignore_headers_val;
@@ -618,8 +619,7 @@ ngx_http_upstream_init_request(ngx_http_request_t *r)
     	  }
     }
 
-
-
+	u->conf->next_upstream = 0;
     if ((u->conf->ar_next_upstream != NULL
             && ngx_http_complex_value(r, u->conf->ar_next_upstream, &ar_next_upstream_val) == NGX_OK)) {
           char* ar_char_next_upstream_val;
@@ -628,7 +628,6 @@ ngx_http_upstream_init_request(ngx_http_request_t *r)
           ar_char_next_upstream_val[ar_next_upstream_val.len] = 0;
     	  char * pch;
     	  pch = strtok (ar_char_next_upstream_val, " ");
-    	  u->conf->next_upstream = 0;
     	  while (pch != NULL)
     	  {
 
@@ -685,9 +684,12 @@ ngx_http_upstream_init_request(ngx_http_request_t *r)
     	    }
     	    pch = strtok (NULL, " ");
     	  }
-    }
+    }else {
+    		u->conf->next_upstream = NGX_CONF_BITMASK_SET
+    	                                       |NGX_HTTP_UPSTREAM_FT_OFF;
+	}
 
-
+  	u->conf->cache_use_stale = 0;
     if ((u->conf->ar_cache_use_stale != NULL
             && ngx_http_complex_value(r, u->conf->ar_cache_use_stale, &ar_cache_use_stale_val) == NGX_OK)) {
   	    if(ngx_strncasecmp((u_char *)ar_cache_use_stale_val.data, (u_char *) "on", 2) == 0){
