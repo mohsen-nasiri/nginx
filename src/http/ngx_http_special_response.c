@@ -58,347 +58,138 @@ static u_char ngx_http_msie_refresh_tail[] =
 
 
 static char ngx_http_error_301_page[] =
-"<html><head>" CRLF
-"<title>Moved Permanently (301)</title>" CRLF
-"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
-"</head><body><div>" CRLF
-"<h1>Arvan Cloud</h1>" CRLF
-"<h3>Moved Permanently (301)</h3>" CRLF
-;
+%WLC_NGX_ERR_PAGE_301%
 
 
 static char ngx_http_error_302_page[] =
-"<html><head>" CRLF
-"<title>Found (302)</title>" CRLF
-"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
-"</head><body><div>" CRLF
-"<h1>Arvan Cloud</h1>" CRLF
-"<h3>Found (302)</h3>" CRLF
-;
+%WLC_NGX_ERR_PAGE_302%
 
 
 static char ngx_http_error_303_page[] =
-"<html><head>" CRLF
-"<title>See Other (303)</title>" CRLF
-"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
-"</head><body><div>" CRLF
-"<h1>Arvan Cloud</h1>" CRLF
-"<h3>See Other (303)</h3>" CRLF
-;
+%WLC_NGX_ERR_PAGE_303%
 
 
 static char ngx_http_error_307_page[] =
-"<html><head>" CRLF
-"<title>Temporary Redirect (307)</title>" CRLF
-"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
-"</head><body><div>" CRLF
-"<h1>Arvan Cloud</h1>" CRLF
-"<h3>Temporary Redirect (307)</h3>" CRLF
-;
+%WLC_NGX_ERR_PAGE_307%
 
 
 static char ngx_http_error_308_page[] =
-"<html><head>" CRLF
-"<title>Permanent Redirect (308)</title>" CRLF
-"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
-"</head><body><div>" CRLF
-"<h1>Arvan Cloud</h1>" CRLF
-"<h3>Permanent Redirect (308)</h3>" CRLF
-;
+%WLC_NGX_ERR_PAGE_308%
 
 
 static char ngx_http_error_400_page[] =
-"<html><head>" CRLF
-"<title>Bad Request (400)</title>" CRLF
-"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
-"</head><body><div>" CRLF
-"<h1>Arvan Cloud</h1>" CRLF
-"<h3>Bad Request (400)</h3>" CRLF
-;
+%WLC_NGX_ERR_PAGE_400%
 
 
 static char ngx_http_error_401_page[] =
-"<html><head>" CRLF
-"<title>Authorization Required (401)</title>" CRLF
-"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
-"</head><body><div>" CRLF
-"<h1>Arvan Cloud</h1>" CRLF
-"<h3>Authorization Required (401)</h3>" CRLF
-;
+%WLC_NGX_ERR_PAGE_401%
 
 
 static char ngx_http_error_402_page[] =
-"<html><head>" CRLF
-"<title>Payment Required (402)</title>" CRLF
-"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
-"</head><body><div>" CRLF
-"<h1>Arvan Cloud</h1>" CRLF
-"<h3>Payment Required (402)</h3>" CRLF
-;
+%WLC_NGX_ERR_PAGE_402%
 
 
 static char ngx_http_error_403_page[] =
-"<html><head>" CRLF
-"<title>Forbidden (403)</title>" CRLF
-"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
-"</head><body><div>" CRLF
-"<h1>Arvan Cloud</h1>" CRLF
-"<h3>Forbidden (403)</h3>" CRLF
-;
+%WLC_NGX_ERR_PAGE_403%
 
 
 static char ngx_http_error_404_page[] =
-"<html><head>" CRLF
-"<title>Not Found (404)</title>" CRLF
-"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
-"</head><body><div>" CRLF
-"<h1>Arvan Cloud</h1>" CRLF
-"<h3>Not Found (404)</h3>" CRLF
-;
+%WLC_NGX_ERR_PAGE_404%
 
 
 static char ngx_http_error_405_page[] =
-"<html><head>" CRLF
-"<title>Not Allowed (405)</title>" CRLF
-"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
-"</head><body><div>" CRLF
-"<h1>Arvan Cloud</h1>" CRLF
-"<h3>Not Allowed (405)</h3>" CRLF
-;
+%WLC_NGX_ERR_PAGE_405%
 
 
 static char ngx_http_error_406_page[] =
-"<html><head>" CRLF
-"<title>Not Acceptable (406)</title>" CRLF
-"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
-"</head><body><div>" CRLF
-"<h1>Arvan Cloud</h1>" CRLF
-"<h3>Not Acceptable (406)</h3>" CRLF
-;
+%WLC_NGX_ERR_PAGE_406%
 
 
 static char ngx_http_error_408_page[] =
-"<html><head>" CRLF
-"<title>Request Time-out (408)</title>" CRLF
-"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
-"</head><body><div>" CRLF
-"<h1>Arvan Cloud</h1>" CRLF
-"<h3>Request Time-out (408)</h3>" CRLF
-;
+%WLC_NGX_ERR_PAGE_408%
 
 
 static char ngx_http_error_409_page[] =
-"<html><head>" CRLF
-"<title>Conflict (409)</title>" CRLF
-"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
-"</head><body><div>" CRLF
-"<h1>Arvan Cloud</h1>" CRLF
-"<h3>Conflict (409)</h3>" CRLF
-;
+%WLC_NGX_ERR_PAGE_409%
 
 
 static char ngx_http_error_410_page[] =
-"<html><head>" CRLF
-"<title>Gone (410)</title>" CRLF
-"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
-"</head><body><div>" CRLF
-"<h1>Arvan Cloud</h1>" CRLF
-"<h3>Gone (410)</h3>" CRLF
-;
+%WLC_NGX_ERR_PAGE_410%
 
 
 static char ngx_http_error_411_page[] =
-"<html><head>" CRLF
-"<title>Length Required (411)</title>" CRLF
-"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
-"</head><body><div>" CRLF
-"<h1>Arvan Cloud</h1>" CRLF
-"<h3>Length Required (411)</h3>" CRLF
-;
+%WLC_NGX_ERR_PAGE_411%
 
 
 static char ngx_http_error_412_page[] =
-"<html><head>" CRLF
-"<title>Precondition Failed (412)</title>" CRLF
-"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
-"</head><body><div>" CRLF
-"<h1>Arvan Cloud</h1>" CRLF
-"<h3>Precondition Failed (412)</h3>" CRLF
-;
+%WLC_NGX_ERR_PAGE_412%
 
 
 static char ngx_http_error_413_page[] =
-"<html><head>" CRLF
-"<title>Request Entity Too Large (413)</title>" CRLF
-"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
-"</head><body><div>" CRLF
-"<h1>Arvan Cloud</h1>" CRLF
-"<h3>Request Entity Too Large (413)</h3>" CRLF
-;
-
+%WLC_NGX_ERR_PAGE_413%
 
 static char ngx_http_error_414_page[] =
-"<html><head>" CRLF
-"<title>Request-URI Too Large (414)</title>" CRLF
-"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
-"</head><body><div>" CRLF
-"<h1>Arvan Cloud</h1>" CRLF
-"<h3>Request-URI Too Large (414)</h3>" CRLF
-;
+%WLC_NGX_ERR_PAGE_414%
 
 
 static char ngx_http_error_415_page[] =
-"<html><head>" CRLF
-"<title>Unsupported Media Type (415)</title>" CRLF
-"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
-"</head><body><div>" CRLF
-"<h1>Arvan Cloud</h1>" CRLF
-"<h3>Unsupported Media Type (415)</h3>" CRLF
-;
+%WLC_NGX_ERR_PAGE_415%
 
 
 static char ngx_http_error_416_page[] =
-"<html><head>" CRLF
-"<title>Requested Range Not Satisfiable (416)</title>" CRLF
-"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
-"</head><body><div>" CRLF
-"<h1>Arvan Cloud</h1>" CRLF
-"<h3>Requested Range Not Satisfiable (416)</h3>" CRLF
-;
+%WLC_NGX_ERR_PAGE_416%
 
 
 static char ngx_http_error_421_page[] =
-"<html><head>" CRLF
-"<title>Too Many Concurrent SMTP Connections (421)</title>" CRLF
-"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
-"</head><body><div>" CRLF
-"<h1>Arvan Cloud</h1>" CRLF
-"<h3>Too Many Concurrent SMTP Connections (421)</h3>" CRLF
-;
+%WLC_NGX_ERR_PAGE_421%
 
 
 static char ngx_http_error_429_page[] =
-"<html><head>" CRLF
-"<title>Too Many Requests (429)</title>" CRLF
-"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
-"</head><body><div>" CRLF
-"<h1>Arvan Cloud</h1>" CRLF
-"<h3>Too Many Requests (429)</h3>" CRLF
-;
+%WLC_NGX_ERR_PAGE_429%
 
 
 static char ngx_http_error_494_page[] =
-"<html><head>" CRLF
-"<title>Request Header Or Cookie Too Large (400)</title></head>" CRLF
-"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
-"</head><body><div>" CRLF
-"<h1>Arvan Cloud</h1>" CRLF
-"<h3>Bad Request (400)</h3>" CRLF
-"<h3>Request Header Or Cookie Too Large</h3>" CRLF
-;
+%WLC_NGX_ERR_PAGE_494%
 
 
 static char ngx_http_error_495_page[] =
-"<html><head>" CRLF
-"<title>The SSL certificate error (400)</title></head>" CRLF
-"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
-"</head><body><div>" CRLF
-"<h1>Arvan Cloud</h1>" CRLF
-"<h3>Bad Request (400)</h3>" CRLF
-"<h3>The SSL certificate error</h3>" CRLF
-;
+%WLC_NGX_ERR_PAGE_495%
 
 
 static char ngx_http_error_496_page[] =
-"<html><head>" CRLF
-"<title>No required SSL certificate was sent (400)</title></head>" CRLF
-"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
-"</head><body><div>" CRLF
-"<h1>Arvan Cloud</h1>" CRLF
-"<h3>Bad Request (400)</h3>" CRLF
-"<h3>No required SSL certificate was sent</h3>" CRLF
-;
+%WLC_NGX_ERR_PAGE_496%
 
 
 static char ngx_http_error_497_page[] =
-"<html><head>" CRLF
-"<title>The plain HTTP request was sent to HTTPS port (400)</title></head>" CRLF
-"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
-"</head><body><div>" CRLF
-"<h1>Arvan Cloud</h1>" CRLF
-"<h3>Bad Request (400)</h3>" CRLF
-"<h3>The plain HTTP request was sent to HTTPS port</h3>" CRLF
-;
+%WLC_NGX_ERR_PAGE_497%
 
 
 static char ngx_http_error_500_page[] =
-"<html><head>" CRLF
-"<title>Internal Server Error (500)</title>" CRLF
-"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
-"</head><body><div>" CRLF
-"<h1>Arvan Cloud</h1>" CRLF
-"<h3>Internal Server Error (500)</h3>" CRLF
-;
+%WLC_NGX_ERR_PAGE_500%
 
 
 static char ngx_http_error_501_page[] =
-"<html><head>" CRLF
-"<title>Not Implemented (501)</title>" CRLF
-"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
-"</head><body><div>" CRLF
-"<h1>Arvan Cloud</h1>" CRLF
-"<h3>Not Implemented (501)</h3>" CRLF
-;
+%WLC_NGX_ERR_PAGE_501%
 
 
 static char ngx_http_error_502_page[] =
-"<html><head>" CRLF
-"<title>Bad Gateway (502)</title>" CRLF
-"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
-"</head><body><div>" CRLF
-"<h1>Arvan Cloud</h1>" CRLF
-"<h3>Bad Gateway (502)</h3>" CRLF
-;
+%WLC_NGX_ERR_PAGE_502%
 
 
 static char ngx_http_error_503_page[] =
-"<html><head>" CRLF
-"<title>Service Temporarily Unavailable (503)</title>" CRLF
-"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
-"</head><body><div>" CRLF
-"<h1>Arvan Cloud</h1>" CRLF
-"<h3>Service Temporarily Unavailable (503)</h3>" CRLF
-;
+%WLC_NGX_ERR_PAGE_503%
 
 
 static char ngx_http_error_504_page[] =
-"<html><head>" CRLF
-"<title>Gateway Time-out (504)</title>" CRLF
-"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
-"</head><body><div>" CRLF
-"<h1>Arvan Cloud</h1>" CRLF
-"<h3>Gateway Time-out (504)</h3>" CRLF
-;
+%WLC_NGX_ERR_PAGE_504%
 
 
 static char ngx_http_error_505_page[] =
-"<html><head>" CRLF
-"<title>HTTP Version Not Supported (505)</title>" CRLF
-"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
-"</head><body><div>" CRLF
-"<h1>Arvan Cloud</h1>" CRLF
-"<h3>HTTP Version Not Supported (505)</h3>" CRLF
-;
+%WLC_NGX_ERR_PAGE_505%
 
 
 static char ngx_http_error_507_page[] =
-"<html><head>" CRLF
-"<title>Insufficient Storage (507)</title>" CRLF
-"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
-"</head><body><div>" CRLF
-"<h1>Arvan Cloud</h1>" CRLF
-"<h3>Insufficient Storage (507)</h3>" CRLF
-;
+%WLC_NGX_ERR_PAGE_507%
 
 
 static ngx_str_t ngx_http_error_pages[] = {

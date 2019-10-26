@@ -19,7 +19,7 @@
 #define NGINX_VER_BUILD    NGINX_VER
 #endif
 
-#define NGINX_VAR          "ARVANCLOUD"
+#define NGINX_VAR          "%WLC_NGX_VAR%"
 #define NGX_OLDPID_EXT     ".oldbin"
 
 

@@ -1,0 +1,9 @@
+"<html><head>" CRLF
+"<title>The plain HTTP request was sent to HTTPS port (400)</title></head>" CRLF
+"<style>*{margin:0;padding:0;}body{background:#eee;color:#fff;}div{background:#007878;padding:70px;margin:50px 0;}h3{color:#ddd;}</style>" CRLF
+"</head><body><div>" CRLF
+"<h1>Arvan Cloud</h1>" CRLF
+"<h3>Bad Request (400)</h3>" CRLF
+"<h3>The plain HTTP request was sent to HTTPS port</h3>" CRLF
+;
+
