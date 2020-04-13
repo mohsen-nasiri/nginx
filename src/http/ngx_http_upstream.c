@@ -4256,7 +4256,7 @@ static ngx_uint_t ngx_http_upstream_next_upstream_tcp(ngx_http_request_t *r, ngx
         return 0;
 
     }
-   ngx_log_error(NGX_LOG_EMERG, r->connection->log, 0,"111111111111111111111111111return");
+   ngx_log_error(NGX_LOG_EMERG, r->connection->log, 0,"111111111111111111111111111return: %s .", tcp_flag);
     return 0;
 
 }
