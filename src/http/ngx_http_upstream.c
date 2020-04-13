@@ -4244,15 +4244,19 @@ static ngx_uint_t ngx_http_upstream_next_upstream_tcp(ngx_http_request_t *r, ngx
     ngx_str_t tcp_flag;
 
     if (ngx_http_complex_value(r, u->conf->next_upstream_tcp, &tcp_flag) != NGX_OK) {
+	ngx_log_error(NGX_LOG_EMERG, r->connection->log, 0,"111111111111111111111111111err");
         return 0;
     }
     if (ngx_strcasecmp(tcp_flag.data, (u_char *) "on") == 0) {
+	ngx_log_error(NGX_LOG_EMERG, r->connection->log, 0,"111111111111111111111111111on");
         return 1;
 
     } else if (ngx_strcasecmp(tcp_flag.data, (u_char *) "off") == 0) {
+	ngx_log_error(NGX_LOG_EMERG, r->connection->log, 0,"111111111111111111111111111off");
         return 0;
 
     }
+   ngx_log_error(NGX_LOG_EMERG, r->connection->log, 0,"111111111111111111111111111return");
     return 0;
 
 }
