@@ -4348,6 +4348,7 @@ ngx_http_upstream_next(ngx_http_request_t *r, ngx_http_upstream_t *u,
         ft_type |= NGX_HTTP_UPSTREAM_FT_NON_IDEMPOTENT;
     }
     tcp_flag =  ngx_http_upstream_next_upstream_tcp(r, u);
+        ngx_log_error(NGX_LOG_EMERG, r->connection->log, 0,"+++++++++++++++++++++++++++++++++:tcp_flag: %ui | request_sent: %ui | whole r: %ui", tcp_flag, u->request_sent, (u->request_sent && r->request_body_no_buffering));
     if (u->peer.tries == 0
         || (!(tcp_flag & !u->request_sent) && ((u->conf->next_upstream & ft_type) != ft_type))
         || (u->request_sent && r->request_body_no_buffering)
