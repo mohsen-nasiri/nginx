@@ -80,6 +80,9 @@ static void
 static ngx_int_t ngx_http_upstream_non_buffered_filter_init(void *data);
 static ngx_int_t ngx_http_upstream_non_buffered_filter(void *data,
     ssize_t bytes);
+static ngx_uint_t ngx_http_upstream_next_upstream_tcp(ngx_http_request_t *r,
+    ngx_http_upstream_t *u);
+
 #if (NGX_THREADS)
 static ngx_int_t ngx_http_upstream_thread_handler(ngx_thread_task_t *task,
     ngx_file_t *file);
@@ -2550,6 +2553,7 @@ ngx_http_upstream_test_next(ngx_http_request_t *r, ngx_http_upstream_t *u)
             mask = un->mask;
         }
 
+        //in this state we dont need to check tcp_flag, because request sended to upstream and response code is
         if (u->peer.tries > 1
             && ((u->conf->next_upstream & mask) == mask)
             && !(u->request_sent && r->request_body_no_buffering)
@@ -4235,13 +4239,30 @@ ngx_http_upstream_dummy_handler(ngx_http_request_t *r, ngx_http_upstream_t *u)
                    "http upstream dummy handler");
 }
 
+static ngx_uint_t ngx_http_upstream_next_upstream_tcp(ngx_http_request_t *r, ngx_http_upstream_t *u){
+    
+    ngx_str_t tcp_flag;
 
+    if (ngx_http_complex_value(r, u->conf->next_upstream_tcp, &tcp_flag) != NGX_OK) {
+        return 0;
+    }
+    if (ngx_strncasecmp(tcp_flag.data, (u_char *)"on", 2) == 0) {
+        return 1;
+
+    } else if (ngx_strncasecmp(tcp_flag.data, (u_char *)"off", 3) == 0) {
+        return 0;
+
+    }
+    return 0;
+
+}
 static void
 ngx_http_upstream_next(ngx_http_request_t *r, ngx_http_upstream_t *u,
     ngx_uint_t ft_type)
 {
     ngx_msec_t  timeout;
-    ngx_uint_t  status, state;
+    ngx_uint_t  status, state, tcp_flag;
+
 
     ngx_log_debug1(NGX_LOG_DEBUG_HTTP, r->connection->log, 0,
                    "http next upstream, %xi", ft_type);
@@ -4326,9 +4347,9 @@ ngx_http_upstream_next(ngx_http_request_t *r, ngx_http_upstream_t *u,
     {
         ft_type |= NGX_HTTP_UPSTREAM_FT_NON_IDEMPOTENT;
     }
-
+    tcp_flag =  ngx_http_upstream_next_upstream_tcp(r, u);
     if (u->peer.tries == 0
-        || ((u->conf->next_upstream & ft_type) != ft_type)
+        || (!(tcp_flag & !u->request_sent) && ((u->conf->next_upstream & ft_type) != ft_type))
         || (u->request_sent && r->request_body_no_buffering)
         || (timeout && ngx_current_msec - u->peer.start_time >= timeout))
     {
