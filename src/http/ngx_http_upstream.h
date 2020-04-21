@@ -170,7 +170,7 @@ typedef struct {
 
     ngx_http_complex_value_t         *ignore_headers;
     ngx_uint_t                       next_upstream;
-    ngx_http_complex_value_t         *ar_next_upstream;
+    ngx_http_complex_value_t         *next_upstream_tcp;
     ngx_uint_t                       store_access;
     ngx_uint_t                       next_upstream_tries;
     ngx_flag_t                       buffering;

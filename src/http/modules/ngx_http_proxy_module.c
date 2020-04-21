@@ -209,22 +209,22 @@ static ngx_conf_post_t  ngx_http_proxy_lowat_post =
     { ngx_http_proxy_lowat_check };
 
 
-//static ngx_conf_bitmask_t  ngx_http_proxy_next_upstream_masks[] = {
-//    { ngx_string("error"), NGX_HTTP_UPSTREAM_FT_ERROR },
-//    { ngx_string("timeout"), NGX_HTTP_UPSTREAM_FT_TIMEOUT },
-//    { ngx_string("invalid_header"), NGX_HTTP_UPSTREAM_FT_INVALID_HEADER },
-//    { ngx_string("non_idempotent"), NGX_HTTP_UPSTREAM_FT_NON_IDEMPOTENT },
-//    { ngx_string("http_500"), NGX_HTTP_UPSTREAM_FT_HTTP_500 },
-//    { ngx_string("http_502"), NGX_HTTP_UPSTREAM_FT_HTTP_502 },
-//    { ngx_string("http_503"), NGX_HTTP_UPSTREAM_FT_HTTP_503 },
-//    { ngx_string("http_504"), NGX_HTTP_UPSTREAM_FT_HTTP_504 },
-//    { ngx_string("http_403"), NGX_HTTP_UPSTREAM_FT_HTTP_403 },
-//    { ngx_string("http_404"), NGX_HTTP_UPSTREAM_FT_HTTP_404 },
-//    { ngx_string("http_429"), NGX_HTTP_UPSTREAM_FT_HTTP_429 },
-//    { ngx_string("updating"), NGX_HTTP_UPSTREAM_FT_UPDATING },
-//    { ngx_string("off"), NGX_HTTP_UPSTREAM_FT_OFF },
-//    { ngx_null_string, 0 }
-//};
+static ngx_conf_bitmask_t  ngx_http_proxy_next_upstream_masks[] = {
+    { ngx_string("error"), NGX_HTTP_UPSTREAM_FT_ERROR },
+    { ngx_string("timeout"), NGX_HTTP_UPSTREAM_FT_TIMEOUT },
+    { ngx_string("invalid_header"), NGX_HTTP_UPSTREAM_FT_INVALID_HEADER },
+    { ngx_string("non_idempotent"), NGX_HTTP_UPSTREAM_FT_NON_IDEMPOTENT },
+    { ngx_string("http_500"), NGX_HTTP_UPSTREAM_FT_HTTP_500 },
+    { ngx_string("http_502"), NGX_HTTP_UPSTREAM_FT_HTTP_502 },
+    { ngx_string("http_503"), NGX_HTTP_UPSTREAM_FT_HTTP_503 },
+    { ngx_string("http_504"), NGX_HTTP_UPSTREAM_FT_HTTP_504 },
+    { ngx_string("http_403"), NGX_HTTP_UPSTREAM_FT_HTTP_403 },
+    { ngx_string("http_404"), NGX_HTTP_UPSTREAM_FT_HTTP_404 },
+    { ngx_string("http_429"), NGX_HTTP_UPSTREAM_FT_HTTP_429 },
+    { ngx_string("updating"), NGX_HTTP_UPSTREAM_FT_UPDATING },
+    { ngx_string("off"), NGX_HTTP_UPSTREAM_FT_OFF },
+    { ngx_null_string, 0 }
+};
 
 
 #if (NGX_HTTP_SSL)
@@ -589,9 +589,16 @@ static ngx_command_t  ngx_http_proxy_commands[] = {
 
     { ngx_string("proxy_next_upstream"),
       NGX_HTTP_MAIN_CONF|NGX_HTTP_SRV_CONF|NGX_HTTP_LOC_CONF|NGX_CONF_1MORE,
-	  ngx_http_set_complex_value_slot,
+      ngx_conf_set_bitmask_slot,
       NGX_HTTP_LOC_CONF_OFFSET,
-      offsetof(ngx_http_proxy_loc_conf_t, upstream.ar_next_upstream),
+      offsetof(ngx_http_proxy_loc_conf_t, upstream.next_upstream),
+      &ngx_http_proxy_next_upstream_masks },
+
+    { ngx_string("proxy_next_upstream_tcp"),
+      NGX_HTTP_MAIN_CONF|NGX_HTTP_SRV_CONF|NGX_HTTP_LOC_CONF|NGX_CONF_1MORE,
+      ngx_http_set_complex_value_slot,
+      NGX_HTTP_LOC_CONF_OFFSET,
+      offsetof(ngx_http_proxy_loc_conf_t, upstream.next_upstream_tcp),
       NULL },
 
     { ngx_string("proxy_next_upstream_tries"),
@@ -3083,20 +3090,19 @@ ngx_http_proxy_merge_loc_conf(ngx_conf_t *cf, void *parent, void *child)
 
 
 
-//    ngx_conf_merge_bitmask_value(conf->upstream.next_upstream,
-//                              prev->upstream.next_upstream,
-//                              (NGX_CONF_BITMASK_SET
-//                               |NGX_HTTP_UPSTREAM_FT_ERROR
-//                               |NGX_HTTP_UPSTREAM_FT_TIMEOUT));
-//
-//
-//    if (conf->upstream.next_upstream & NGX_HTTP_UPSTREAM_FT_OFF) {
-//        conf->upstream.next_upstream = NGX_CONF_BITMASK_SET
-//                                       |NGX_HTTP_UPSTREAM_FT_OFF;
-//    }
+    ngx_conf_merge_bitmask_value(conf->upstream.next_upstream,
+                              prev->upstream.next_upstream,
+                              (NGX_CONF_BITMASK_SET
+                               |NGX_HTTP_UPSTREAM_FT_ERROR
+                               |NGX_HTTP_UPSTREAM_FT_TIMEOUT));
 
-    if ( conf->upstream.ar_next_upstream == NULL ){
-    	conf->upstream.ar_next_upstream = prev->upstream.ar_next_upstream ;
+    if (conf->upstream.next_upstream & NGX_HTTP_UPSTREAM_FT_OFF) {
+        conf->upstream.next_upstream = NGX_CONF_BITMASK_SET
+                                       |NGX_HTTP_UPSTREAM_FT_OFF;
+    }
+
+    if (conf->upstream.next_upstream_tcp == NULL) {
+        conf->upstream.next_upstream_tcp = prev->upstream.next_upstream_tcp;
     }
 
     if (ngx_conf_merge_path_value(cf, &conf->upstream.temp_path,
