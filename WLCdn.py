@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*- 
 
 import fileinput
@@ -21,7 +21,7 @@ def inplace_change(filename, var_name, new_string):
     for line in fileinput.input(filename, inplace=True):
         # inside this loop the STDOUT will be redirected to the file
         # the comma after each print statement is needed to avoid double line breaks
-        print line.replace(old_string, new_string),
+        print(line.replace(old_string, new_string), end=' ')
 
 def replace_var(file_name, var_name):
     new_string = read_to_var(var_name)
