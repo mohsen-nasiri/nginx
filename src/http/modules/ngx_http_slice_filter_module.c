@@ -188,7 +188,7 @@ ngx_http_slice_header_filter(ngx_http_request_t *r)
         ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
                       "unexpected range in slice response: %O-%O",
                       cr.start, cr.end);
-        return NGX_ERROR;
+        return NGX_HTTP_BAD_GATEWAY;
     }
 
     ctx->start = end;
