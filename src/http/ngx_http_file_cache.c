@@ -10,9 +10,6 @@
 #include <ngx_http.h>
 #include <ngx_md5.h>
 
-#if (NGX_HTTP_CACHE_OPTIMIZED)
-#include <ngx_cache_optimize_module.h>
-#endif
 
 static ngx_int_t ngx_http_file_cache_lock(ngx_http_request_t *r,
     ngx_http_cache_t *c);
@@ -1394,14 +1391,7 @@ ngx_http_file_cache_update(ngx_http_request_t *r, ngx_temp_file_t *tf)
     ext.delete_file = 1;
     ext.log = r->connection->log;
 
-#if (NGX_HTTP_CACHE_OPTIMIZED)
-    rc = ngx_http_file_cache_optimize(r,tf);
-#else
-    rc = NGX_DECLINED;
-#endif
-    if (rc == NGX_DECLINED) {
-        rc = ngx_ext_rename_file(&tf->file.name, &c->file.name, &ext);
-    }
+    rc = ngx_ext_rename_file(&tf->file.name, &c->file.name, &ext);
 
     if (rc == NGX_OK) {
 
