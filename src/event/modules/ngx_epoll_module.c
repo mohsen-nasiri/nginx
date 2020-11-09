@@ -123,12 +123,6 @@ static ngx_int_t ngx_epoll_notify(ngx_event_handler_pt handler);
 static ngx_int_t ngx_epoll_process_events(ngx_cycle_t *cycle, ngx_msec_t timer,
     ngx_uint_t flags);
 
-#if (NGX_SSL)
-static ngx_int_t ngx_epoll_add_async_connection(ngx_connection_t *c);
-static ngx_int_t ngx_epoll_del_async_connection(ngx_connection_t *c,
-    ngx_uint_t flags);
-#endif
-
 #if (NGX_HAVE_FILE_AIO)
 static void ngx_epoll_eventfd_handler(ngx_event_t *ev);
 #endif
@@ -202,13 +196,6 @@ static ngx_event_module_t  ngx_epoll_module_ctx = {
         ngx_epoll_process_events,        /* process the events */
         ngx_epoll_init,                  /* init the events */
         ngx_epoll_done,                  /* done the events */
-#if (NGX_SSL)
-        ngx_epoll_add_async_connection,  /* add an async conn */
-        ngx_epoll_del_async_connection   /* del an async conn */
-#else
-        NULL,                            /* add an async conn */
-        NULL                             /* del an async conn */
-#endif
     }
 };
 
@@ -639,7 +626,7 @@ ngx_epoll_add_event(ngx_event_t *ev, ngx_int_t event, ngx_uint_t flags)
 
     if (epoll_ctl(ep, op, c->fd, &ee) == -1) {
         ngx_log_error(NGX_LOG_ALERT, ev->log, ngx_errno,
-                      "socket add event epoll_ctl(%d, %d) failed", op, c->fd);
+                      "epoll_ctl(%d, %d) failed", op, c->fd);
         return NGX_ERROR;
     }
 
@@ -700,7 +687,7 @@ ngx_epoll_del_event(ngx_event_t *ev, ngx_int_t event, ngx_uint_t flags)
 
     if (epoll_ctl(ep, op, c->fd, &ee) == -1) {
         ngx_log_error(NGX_LOG_ALERT, ev->log, ngx_errno,
-                      "socket del event epoll_ctl(%d, %d) failed", op, c->fd);
+                      "epoll_ctl(%d, %d) failed", op, c->fd);
         return NGX_ERROR;
     }
 
@@ -723,7 +710,7 @@ ngx_epoll_add_connection(ngx_connection_t *c)
 
     if (epoll_ctl(ep, EPOLL_CTL_ADD, c->fd, &ee) == -1) {
         ngx_log_error(NGX_LOG_ALERT, c->log, ngx_errno,
-                      "socket add_conn epoll_ctl(EPOLL_CTL_ADD, %d) failed", c->fd);
+                      "epoll_ctl(EPOLL_CTL_ADD, %d) failed", c->fd);
         return NGX_ERROR;
     }
 
@@ -761,7 +748,7 @@ ngx_epoll_del_connection(ngx_connection_t *c, ngx_uint_t flags)
 
     if (epoll_ctl(ep, op, c->fd, &ee) == -1) {
         ngx_log_error(NGX_LOG_ALERT, c->log, ngx_errno,
-                      "socket del conn epoll_ctl(%d, %d) failed", op, c->fd);
+                      "epoll_ctl(%d, %d) failed", op, c->fd);
         return NGX_ERROR;
     }
 
@@ -771,50 +758,6 @@ ngx_epoll_del_connection(ngx_connection_t *c, ngx_uint_t flags)
     return NGX_OK;
 }
 
-
-#if (NGX_SSL)
-static ngx_int_t
-ngx_epoll_add_async_connection(ngx_connection_t *c)
-{
-    struct epoll_event  ee;
-
-    ee.events = EPOLLIN|EPOLLOUT|EPOLLET|EPOLLRDHUP;
-    ee.data.ptr = (void *) ((uintptr_t) c | c->read->instance);
-
-    ngx_log_debug2(NGX_LOG_DEBUG_EVENT, c->log, 0,
-                   "epoll add async connection: fd:%d ev:%08XD", c->async_fd, ee.events);
-    if (epoll_ctl(ep, EPOLL_CTL_ADD, c->async_fd, &ee) == -1) {
-        ngx_log_error(NGX_LOG_ALERT, c->log, ngx_errno,
-                      "async add conn epoll_ctl(EPOLL_CTL_ADD, %d) failed", c->async_fd);
-        return NGX_ERROR;
-    }
-
-    return NGX_OK;
-}
-
-
-static ngx_int_t
-ngx_epoll_del_async_connection(ngx_connection_t *c, ngx_uint_t flags)
-{
-    int                 op;
-    struct epoll_event  ee;
-
-    ngx_log_debug1(NGX_LOG_DEBUG_EVENT, c->log, 0,
-                   "epoll del async connection: fd:%d", c->async_fd);
-
-    op = EPOLL_CTL_DEL;
-    ee.events = 0;
-    ee.data.ptr = NULL;
-    if (epoll_ctl(ep, op, c->async_fd, &ee) == -1) {
-        ngx_log_error(NGX_LOG_ALERT, c->log, ngx_errno,
-                      "async del conn epoll_ctl(%d, %d) failed", op, c->async_fd);
-        c->async_fd = -1;
-        return NGX_ERROR;
-    }
-    c->async_fd = -1;
-    return NGX_OK;
-}
-#endif
 
 #if (NGX_HAVE_EVENTFD)
 
