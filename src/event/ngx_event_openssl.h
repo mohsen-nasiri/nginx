@@ -71,7 +71,6 @@ struct ngx_ssl_s {
     SSL_CTX                    *ctx;
     ngx_log_t                  *log;
     size_t                      buffer_size;
-    ngx_flag_t                  asynch;
 };
 
 
@@ -96,6 +95,7 @@ struct ngx_ssl_connection_s {
     u_char                      early_buf;
 
     unsigned                    handshaked:1;
+    unsigned                    handshake_rejected:1;
     unsigned                    renegotiation:1;
     unsigned                    buffer:1;
     unsigned                    no_wait_shutdown:1;
@@ -204,6 +204,9 @@ ngx_int_t ngx_ssl_dhparam(ngx_conf_t *cf, ngx_ssl_t *ssl, ngx_str_t *file);
 ngx_int_t ngx_ssl_ecdh_curve(ngx_conf_t *cf, ngx_ssl_t *ssl, ngx_str_t *name);
 ngx_int_t ngx_ssl_early_data(ngx_conf_t *cf, ngx_ssl_t *ssl,
     ngx_uint_t enable);
+ngx_int_t ngx_ssl_conf_commands(ngx_conf_t *cf, ngx_ssl_t *ssl,
+    ngx_array_t *commands);
+
 ngx_int_t ngx_ssl_client_session_cache(ngx_conf_t *cf, ngx_ssl_t *ssl,
     ngx_uint_t enable);
 ngx_int_t ngx_ssl_session_cache(ngx_ssl_t *ssl, ngx_str_t *sess_ctx,
@@ -212,6 +215,7 @@ ngx_int_t ngx_ssl_session_cache(ngx_ssl_t *ssl, ngx_str_t *sess_ctx,
 ngx_int_t ngx_ssl_session_ticket_keys(ngx_conf_t *cf, ngx_ssl_t *ssl,
     ngx_array_t *paths);
 ngx_int_t ngx_ssl_session_cache_init(ngx_shm_zone_t *shm_zone, void *data);
+
 ngx_int_t ngx_ssl_create_connection(ngx_ssl_t *ssl, ngx_connection_t *c,
     ngx_uint_t flags);
 
@@ -234,7 +238,6 @@ ngx_ssl_session_t *ngx_ssl_get0_session(ngx_connection_t *c);
 
 ngx_int_t ngx_ssl_check_host(ngx_connection_t *c, ngx_str_t *name);
 
-#define ngx_ssl_waiting_for_async(c) SSL_waiting_for_async(c->ssl->connection)
 
 ngx_int_t ngx_ssl_get_protocol(ngx_connection_t *c, ngx_pool_t *pool,
     ngx_str_t *s);
@@ -292,7 +295,6 @@ void ngx_cdecl ngx_ssl_error(ngx_uint_t level, ngx_log_t *log, ngx_err_t err,
     char *fmt, ...);
 void ngx_ssl_cleanup_ctx(void *data);
 
-ngx_int_t ngx_ssl_async_process_fds(ngx_connection_t *c) ;
 
 extern int  ngx_ssl_connection_index;
 extern int  ngx_ssl_server_conf_index;

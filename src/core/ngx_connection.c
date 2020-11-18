@@ -1045,14 +1045,7 @@ ngx_close_listening_sockets(ngx_cycle_t *cycle)
                      * for closed shared listening sockets unless
                      * the events was explicitly deleted
                      */
-#if (NGX_SSL)
-                    if (c->asynch && ngx_del_async_conn) {
-                        if (c->num_async_fds) {
-                            ngx_del_async_conn(c, NGX_DISABLE_EVENT);
-                            c->num_async_fds--;
-                        }
-                    }
-#endif
+
                     ngx_del_event(c->read, NGX_READ_EVENT, 0);
 
                 } else {
@@ -1114,12 +1107,9 @@ ngx_get_connection(ngx_socket_t s, ngx_log_t *log)
         return NULL;
     }
 
-    c = ngx_cycle->free_connections;
+    ngx_drain_connections((ngx_cycle_t *) ngx_cycle);
 
-    if (c == NULL) {
-        ngx_drain_connections((ngx_cycle_t *) ngx_cycle);
-        c = ngx_cycle->free_connections;
-    }
+    c = ngx_cycle->free_connections;
 
     if (c == NULL) {
         ngx_log_error(NGX_LOG_ALERT, log, 0,
@@ -1145,12 +1135,6 @@ ngx_get_connection(ngx_socket_t s, ngx_log_t *log)
     c->write = wev;
     c->fd = s;
     c->log = log;
-
-#if (NGX_SSL)
-    c->num_async_fds = 0;
-    c->async_fd = 0;
-    c->asynch = 0;
-#endif
 
     instance = rev->instance;
 
@@ -1205,28 +1189,11 @@ ngx_close_connection(ngx_connection_t *c)
         ngx_del_timer(c->write);
     }
 
-#if (NGX_SSL)
-    if (c->asynch && ngx_del_async_conn) {
-        if (c->num_async_fds) {
-            ngx_del_async_conn(c, NGX_DISABLE_EVENT);
-            c->num_async_fds--;
-        }
-    }
-#endif
-
     if (!c->shared) {
         if (ngx_del_conn) {
             ngx_del_conn(c, NGX_CLOSE_EVENT);
 
         } else {
-#if (NGX_SSL)
-            if (c->asynch && ngx_del_async_conn) {
-                if (c->num_async_fds) {
-                    ngx_del_async_conn(c, NGX_DISABLE_EVENT);
-                    c->num_async_fds--;
-                }
-            }
-#endif            
             if (c->read->active || c->read->disabled) {
                 ngx_del_event(c->read, NGX_READ_EVENT, NGX_CLOSE_EVENT);
             }
@@ -1327,6 +1294,21 @@ ngx_drain_connections(ngx_cycle_t *cycle)
     ngx_uint_t         i, n;
     ngx_queue_t       *q;
     ngx_connection_t  *c;
+
+    if (cycle->free_connection_n > cycle->connection_n / 16
+        || cycle->reusable_connections_n == 0)
+    {
+        return;
+    }
+
+    if (cycle->connections_reuse_time != ngx_time()) {
+        cycle->connections_reuse_time = ngx_time();
+
+        ngx_log_error(NGX_LOG_WARN, cycle->log, 0,
+                      "%ui worker_connections are not enough, "
+                      "reusing connections",
+                      cycle->connection_n);
+    }
 
     n = ngx_max(ngx_min(32, cycle->reusable_connections_n / 8), 1);
 
