@@ -4,9 +4,6 @@
 
 <change_log title="nginx">
 
-<<<<<<< HEAD
-=======
-
 <changes ver="1.17.8" date="2020-01-21">
 
 <change type="feature">
@@ -1004,7 +1001,6 @@ if the "resolver" directive was used in SMTP proxy.
 </changes>
 
 
->>>>>>> 9cb22efa3fe947f8474338b99d389a35da177bb9
 <changes ver="1.17.2" date="2019-07-23">
 
 <change type="change">
