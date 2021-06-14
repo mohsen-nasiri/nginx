@@ -286,7 +286,7 @@ ngx_http_slice_body_filter(ngx_http_request_t *r, ngx_chain_t *in)
     }
 
     if (ngx_http_subrequest(r, &r->uri, &r->args, &ctx->sr, NULL,
-    		AR_NGX_HTTP_SUBREQUEST_SLICE)
+    		NGX_HTTP_SUBREQUEST_CLONE)
         != NGX_OK)
     {
         return NGX_ERROR;
